@@ -37,6 +37,7 @@ public class LivAISpeechToTextActivity extends AppCompatActivity {
 
     Speech2TextIntent.Speech2TextIntentCallback callbackFromS2T;
     Speech2TextIntent s2TIntent;
+    String text = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,7 +67,7 @@ public class LivAISpeechToTextActivity extends AppCompatActivity {
                 if (transcriptions.size() > 0) {
                     for(Transcription transcription : transcriptions){
                         Log.d(TAG, "Partial Transcription:"+transcription.getText()+", English Transcription:"+transcription.getEnglishText()+", Confidence:"+transcription.getConfidence());
-                        editText.setText("Streaming: "+transcription.getText());
+                        editText.setText(text+transcription.getText());
                     }
                 }
             }
@@ -100,7 +101,7 @@ public class LivAISpeechToTextActivity extends AppCompatActivity {
                 //ripple.setVisibility(View.GONE);
                 isRecording = false;
                 toggleButton.setChecked(false);
-
+                text = editText.getText().toString();
             }
         };
 

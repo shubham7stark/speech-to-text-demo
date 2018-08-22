@@ -24,7 +24,7 @@ public class GoogleCloudSpeechToTextActivity extends AppCompatActivity {
 
     private SpeechService mSpeechService;
     private VoiceRecorder mVoiceRecorder;
-
+    String textStr = "";
     private final VoiceRecorder.Callback mVoiceCallback = new VoiceRecorder.Callback() {
 
         @Override
@@ -68,10 +68,11 @@ public class GoogleCloudSpeechToTextActivity extends AppCompatActivity {
                             @Override
                             public void run() {
                                 if (isFinal) {
-                                    editText.setText("");
+                                    textStr = editText.getText().toString();
+                                    //editText.setText("");
                                     //stringList.add(0,text);
                                 } else {
-                                    editText.setText(text);
+                                    editText.setText(textStr + text);
                                 }
                             }
                         });
