@@ -17,6 +17,8 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ToggleButton;
@@ -25,247 +27,120 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
-    EditText editText;
-    ToggleButton toggleButton, toggleButton2;
-    private static final int REQ_CODE_SPEECH_INPUT = 100;
+    Button btnAndroid, btnCloud, btnLivai, btnMediaAcc, btnMicAcc, btnInternetAcc;
     private static final int MY_PERMISSIONS_REQUEST_RECORD_AUDIO = 101;
-
-    String mFileName;
-    private MediaRecorder mRecorder = null;
-    private MediaPlayer mPlayer = null;
+    private static final int MY_PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE = 102;
+    private static final int MY_PERMISSIONS_REQUEST_INTERNET = 103;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        checkPermission();
+        btnAndroid = (Button)findViewById(R.id.button_android_speech);
+        btnCloud = (Button)findViewById(R.id.button_google_cloud_speech);
+        btnLivai = (Button)findViewById(R.id.button_livai_speech);
 
-        // Record to the external cache directory for visibility
-        mFileName = getExternalCacheDir().getAbsolutePath();
-        mFileName += "/audiorecordtest.3gp";
+        btnMediaAcc = (Button)findViewById(R.id.button_media_access);
+        btnMicAcc = (Button)findViewById(R.id.button_mic_access);
+        btnInternetAcc = (Button)findViewById(R.id.button_internet_access);
 
-        //Google-Translator API Handling
-        editText = (EditText) findViewById(R.id.editText);
-        toggleButton = (ToggleButton) findViewById(R.id.button);
-        toggleButton2 = (ToggleButton) findViewById(R.id.play_pause_button);
-
-        final Intent intent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
-        intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL, RecognizerIntent.LANGUAGE_MODEL_FREE_FORM);
-        intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE, "hi");
-        intent.putExtra(RecognizerIntent.EXTRA_PARTIAL_RESULTS,true);
-        intent.putExtra(RecognizerIntent.EXTRA_CALLING_PACKAGE,
-                "com.example.shubham7stark.speechtotext");
-
-        final SpeechRecognizer recognizer = SpeechRecognizer
-                .createSpeechRecognizer(this.getApplicationContext());
-
-        RecognitionListener listener = new RecognitionListener(){
+        btnAndroid.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onReadyForSpeech(Bundle bundle) {
-
+            public void onClick(View v) {
+                startActivity(new Intent(MainActivity.this, AndroidSpeechToTextActivity.class));
             }
-
-            @Override
-            public void onBeginningOfSpeech() {
-
-            }
-
-            @Override
-            public void onRmsChanged(float v) {
-
-            }
-
-            @Override
-            public void onBufferReceived(byte[] bytes) {
-
-            }
-
-            @Override
-            public void onEndOfSpeech() {
-                editText.setText("EndOfSpeech()");
-            }
-
-            @Override
-            public void onResults(Bundle results) {
-                    toggleButton.setChecked(false);
-            }
-
-            @Override
-            public void onError(int error) {
-                if(error != 5)editText.setText("Error()");
-            }
-
-            @Override
-            public void onPartialResults(Bundle partialResults) {
-                ArrayList<String> matches = partialResults
-                        .getStringArrayList(SpeechRecognizer.RESULTS_RECOGNITION);
-                //displaying the first match
-                if (matches != null)
-                    editText.setText(matches.get(0));
-            }
-
-            @Override
-            public void onEvent(int i, Bundle bundle) {
-
-            }
-        };
-
-        recognizer.setRecognitionListener(listener);
-
-        toggleButton.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if (isChecked) {
-                    startVoiceInput(recognizer, intent, 1);
-                } else {
-                    startVoiceInput(recognizer, intent, 0);
-                }
-                //onRecord(isChecked);
-            }
-
         });
 
-        toggleButton2.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                onPlay(isChecked);
+        btnCloud.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(MainActivity.this, GoogleCloudSpeechToTextActivity.class));
+            }
+        });
+
+        btnLivai.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(MainActivity.this, LivAISpeechToTextActivity.class));
+            }
+        });
+
+        btnMediaAcc.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                checkMediaPermission();
+            }
+        });
+
+        btnMicAcc.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                checkMicPermission();
+            }
+        });
+
+        btnInternetAcc.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                checkInternetPermission();
             }
         });
 
     }
 
-    private void checkPermission() {
+    private void checkMicPermission() {
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             if (ContextCompat.checkSelfPermission(this,
                     Manifest.permission.RECORD_AUDIO)
                     != PackageManager.PERMISSION_GRANTED) {
-
-                // Permission is not granted
                 // Should we show an explanation?
                 if (ActivityCompat.shouldShowRequestPermissionRationale(this,
                         Manifest.permission.RECORD_AUDIO)) {
-                    // Show an explanation to the user *asynchronously* -- don't block
-                    // this thread waiting for the user's response! After the user
-                    // sees the explanation, try again to request the permission.
                 } else {
-                    // No explanation needed; request the permission
                     ActivityCompat.requestPermissions(this,
                             new String[]{Manifest.permission.RECORD_AUDIO},
-                        MY_PERMISSIONS_REQUEST_RECORD_AUDIO);
+                            MY_PERMISSIONS_REQUEST_RECORD_AUDIO);
                 }
             } else {
-                // Permission has already been granted
             }
-            /*
-            if (!(ContextCompat.checkSelfPermission(this, Manifest.permission.RECORD_AUDIO) == PackageManager.PERMISSION_GRANTED)) {
-                Intent intent = new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS,
-                        Uri.parse("package:" + getPackageName()));
-                startActivity(intent);
-                finish();
-            }*/
         }
     }
 
-    private void startVoiceInput(SpeechRecognizer recognizer, Intent intent, int flag) {
-        if(flag == 1){
-            recognizer.startListening(intent);
-        }else{
-            recognizer.stopListening();
-        }
-    }
-
-
-    /*
-    *   Audio recording features
-    * */
-    private void onRecord(boolean start) {
-        if (start) {
-            startRecording();
-
-        } else {
-            //stopRecording();
-        }
-    }
-
-    private void onPlay(boolean start) {
-        if (start) {
-            startPlaying();
-        } else {
-            stopPlaying();
-        }
-    }
-
-    private void startPlaying() {
-        if(mPlayer == null)
-        mPlayer = new MediaPlayer();
-        try {
-            mPlayer.setDataSource(mFileName);
-            mPlayer.prepare();
-            mPlayer.start();
-        } catch (IOException e) {
-            Log.e("Media Recoder", "prepare() failed");
-        }
-    }
-
-    private void stopPlaying() {
-        mPlayer.release();
-        mPlayer = null;
-    }
-
-    private void startRecording() {
-        mRecorder = new MediaRecorder();
-        mRecorder.setAudioSource(MediaRecorder.AudioSource.MIC);
-
-        mRecorder.setOutputFormat(MediaRecorder.OutputFormat.THREE_GPP);
-        mRecorder.setOutputFile(mFileName);
-        mRecorder.setAudioEncoder(MediaRecorder.AudioEncoder.AMR_NB);
-
-        try {
-            mRecorder.prepare();
-        } catch (IOException e) {
-            Log.e("Media Recorder:", "prepare() failed");
-        }
-
-        mRecorder.start();
-
-    }
-
-    private void stopRecording() {
-        mRecorder.stop();
-        mRecorder.release();
-        mRecorder = null;
-    }
-
-    @Override
-    public void onStop() {
-        super.onStop();
-        if (mRecorder != null) {
-            mRecorder.release();
-            mRecorder = null;
-        }
-
-        if (mPlayer != null) {
-            mPlayer.release();
-            mPlayer = null;
-        }
-    }
-
-/*
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-
-        switch (requestCode) {
-            case REQ_CODE_SPEECH_INPUT: {
-                if (resultCode == RESULT_OK && null != data) {
-
-                    ArrayList<String> result = data
-                            .getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS);
-                    textView.setText(result.get(0));
+    private void checkMediaPermission() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            if (ContextCompat.checkSelfPermission(this,
+                    Manifest.permission.READ_EXTERNAL_STORAGE)
+                    != PackageManager.PERMISSION_GRANTED) {
+                // Should we show an explanation?
+                if (ActivityCompat.shouldShowRequestPermissionRationale(this,
+                        Manifest.permission.READ_EXTERNAL_STORAGE)) {
+                } else {
+                    ActivityCompat.requestPermissions(this,
+                            new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},
+                            MY_PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE);
                 }
-                break;
+            } else {
             }
-
         }
     }
-    */
+
+    private void checkInternetPermission() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            if (ContextCompat.checkSelfPermission(this,
+                    Manifest.permission.INTERNET)
+                    != PackageManager.PERMISSION_GRANTED) {
+                // Should we show an explanation?
+                if (ActivityCompat.shouldShowRequestPermissionRationale(this,
+                        Manifest.permission.INTERNET)) {
+                } else {
+                    ActivityCompat.requestPermissions(this,
+                            new String[]{Manifest.permission.INTERNET},
+                            MY_PERMISSIONS_REQUEST_INTERNET);
+                }
+            } else {
+            }
+        }
+    }
+
 }

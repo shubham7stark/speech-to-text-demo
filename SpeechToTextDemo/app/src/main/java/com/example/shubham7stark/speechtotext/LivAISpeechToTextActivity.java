@@ -29,6 +29,8 @@ public class LivAISpeechToTextActivity extends AppCompatActivity {
 
     private static final int MY_PERMISSIONS_REQUEST_RECORD_AUDIO = 101;
     private static final int MY_PERMISSIONS_REQUEST_INTERNET = 102;
+    private static final int MY_PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE = 103;
+
     private static final String TAG = "Liv.AI SpeechToText";
     boolean isRecording = false;
 
@@ -154,7 +156,7 @@ public class LivAISpeechToTextActivity extends AppCompatActivity {
                 } else {
                     ActivityCompat.requestPermissions(this,
                             new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},
-                            MY_PERMISSIONS_REQUEST_INTERNET);
+                            MY_PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE);
                 }
             }
 

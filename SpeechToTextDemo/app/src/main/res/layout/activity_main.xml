@@ -7,26 +7,54 @@
     android:padding="12dp"
     tools:context="com.example.shubham7stark.speechtotext.MainActivity">
 
-    <EditText
-        android:id="@+id/editText"
+    <Button
+        android:id="@+id/button_android_speech"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_centerVertical="true"
-        android:hint="You will see input here"
-        android:textAppearance="@style/Base.TextAppearance.AppCompat.Large" />
+        android:text="android.speech" />
 
-    <ToggleButton
-        android:id="@+id/button"
-        android:layout_width="wrap_content"
+    <Button
+        android:id="@+id/button_google_cloud_speech"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/editText"
-        android:text="ToggleButton" />
+        android:layout_below="@+id/button_android_speech"
+        android:text="google.cloud.speech" />
 
-    <ToggleButton
-        android:id="@+id/play_pause_button"
-        android:layout_width="wrap_content"
+    <Button
+        android:id="@+id/button_livai_speech"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/button"
-        android:text="ToggleButton" />
+        android:layout_below="@+id/button_google_cloud_speech"
+        android:text="livai.speech" />
+
+    <TextView
+        android:id="@+id/textView_permissions"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="14dp"
+        android:layout_below="@+id/button_livai_speech"
+        android:text="Provide permissions for Mic, Internet and Media Access"
+        android:layout_margin="20dp"/>
+
+    <Button
+        android:id="@+id/button_media_access"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/textView_permissions"
+        android:text="Media Access" />
+
+    <Button
+        android:id="@+id/button_mic_access"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/button_media_access"
+        android:text="Microphone Access" />
+
+    <Button
+        android:id="@+id/button_internet_access"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/button_mic_access"
+        android:text="Internet Access" />
 
 </RelativeLayout>
