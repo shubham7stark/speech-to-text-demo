@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">speechtotext</string>
+    <string name="livtoken">a2cd6fa0fa6d0267436c3a832cd5efeb6029cc4f</string>
+    <string name="title_activity_liv_aispeech_to_text">LivAI Activity</string>
+</resources>
