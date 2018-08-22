@@ -1,6 +1,7 @@
 package com.example.shubham7stark.speechtotext;
 
 import android.Manifest;
+import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
@@ -41,6 +42,7 @@ public class LivAISpeechToTextActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_liv_aispeech_to_text);
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         checkPermission();
         //Google-Translator API Handling
         editText = (EditText) findViewById(R.id.livai_editText);

@@ -31,7 +31,8 @@
         android:id="@+id/textView_permissions"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textSize="14dp"
+        android:textSize="18dp"
+        android:textColor="@color/colorAccent"
         android:layout_below="@+id/button_livai_speech"
         android:text="Provide permissions for Mic, Internet and Media Access"
         android:layout_margin="20dp"/>

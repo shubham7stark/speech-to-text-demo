@@ -20,13 +20,15 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".GoogleCloudSpeechToTextActivity"></activity>
+        <activity android:name=".GoogleCloudSpeechToTextActivity"
+            android:label="google.cloud.speech Activity"></activity>
 
         <activity
             android:name=".LivAISpeechToTextActivity"
             android:label="@string/title_activity_liv_aispeech_to_text"/>
 
-        <activity android:name=".AndroidSpeechToTextActivity"></activity>
+        <activity android:name=".AndroidSpeechToTextActivity"
+            android:label="android.speech Activity"></activity>
     </application>
 
 </manifest>

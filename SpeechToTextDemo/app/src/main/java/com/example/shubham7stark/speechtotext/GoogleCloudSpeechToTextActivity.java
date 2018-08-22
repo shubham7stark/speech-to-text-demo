@@ -55,14 +55,20 @@ public class GoogleCloudSpeechToTextActivity extends AppCompatActivity {
                 @Override
                 public void onSpeechRecognized(final String text, final boolean isFinal) {
                     if (isFinal) {
-                        mVoiceRecorder.dismiss();
+                        stopVoiceRecorder();
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                               toggleButton.setChecked(false);
+                            }
+                        });
                     }
                     if (editText != null && !TextUtils.isEmpty(text)) {
                         runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
                                 if (isFinal) {
-                                    editText.setText(null);
+                                    editText.setText("");
                                     //stringList.add(0,text);
                                 } else {
                                     editText.setText(text);
@@ -95,6 +101,14 @@ public class GoogleCloudSpeechToTextActivity extends AppCompatActivity {
         });
     }
 
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+        if(mSpeechService == null){
+            mSpeechService = new SpeechService(GoogleCloudSpeechToTextActivity.this);
+        }
+    }
+
     private void startVoiceRecorder() {
         if (mVoiceRecorder != null) {
             mVoiceRecorder.stop();
@@ -114,6 +128,12 @@ public class GoogleCloudSpeechToTextActivity extends AppCompatActivity {
     protected void onStart() {
         super.onStart();
         mSpeechService.addListener(mSpeechServiceListener);
+    }
+
+    @Override
+    public void onBackPressed() {
+        stopVoiceRecorder();
+        super.onBackPressed();
     }
 
     @Override

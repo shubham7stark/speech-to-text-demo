@@ -3,6 +3,7 @@ package com.example.shubham7stark.speechtotext;
 import android.Manifest;
 import android.content.ActivityNotFoundException;
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
 import android.media.MediaPlayer;
 import android.media.MediaRecorder;
@@ -21,6 +22,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.EditText;
+import android.widget.Toast;
 import android.widget.ToggleButton;
 
 import java.io.IOException;
@@ -36,6 +38,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         btnAndroid = (Button)findViewById(R.id.button_android_speech);
         btnCloud = (Button)findViewById(R.id.button_google_cloud_speech);
         btnLivai = (Button)findViewById(R.id.button_livai_speech);
@@ -103,6 +106,8 @@ public class MainActivity extends AppCompatActivity {
                             MY_PERMISSIONS_REQUEST_RECORD_AUDIO);
                 }
             } else {
+                Toast.makeText(this, "Thanks! You have already granted permission!",
+                        Toast.LENGTH_LONG).show();
             }
         }
     }
@@ -121,6 +126,8 @@ public class MainActivity extends AppCompatActivity {
                             MY_PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE);
                 }
             } else {
+                Toast.makeText(this, "Thanks! You have already granted permission!",
+                        Toast.LENGTH_LONG).show();
             }
         }
     }
@@ -139,6 +146,8 @@ public class MainActivity extends AppCompatActivity {
                             MY_PERMISSIONS_REQUEST_INTERNET);
                 }
             } else {
+                Toast.makeText(this, "Thanks! You have already granted permission!",
+                        Toast.LENGTH_LONG).show();
             }
         }
     }
